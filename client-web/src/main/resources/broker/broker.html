@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--<script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>-->
+<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+<script src="/js/stomp.js"></script>
+<script>
+    var stompClient = null;
+    function connect(){
+        var socket = new SockJS("http://localhost:8081/client");
+
+        stompClient = Stomp.over(socket);
+        stompClient.connect("guest", "guest",function (frame) {
+
+            document.getElementById("sendBtn").removeAttribute("disabled");
+            document.getElementById("closeBtn").removeAttribute("disabled");
+            document.getElementById("sendUserBtn").removeAttribute("disabled");
+            stompClient.subscribe("/topic/greetings",function (greeting) {
+//                alert(JSON.parse(greeting.body).content);
+                //debug看greeting对象，返回值放在body字段中；content为返回值json的key
+                document.getElementById("broker").value = JSON.parse(greeting.body).content;
+            });
+
+            stompClient.subscribe("/app/init",function (value) {
+                document.getElementById("init").value = value.body;
+            });
+
+            stompClient.subscribe("/user/queue/nofications",function (greeting) {
+                document.getElementById("userBroker").value = JSON.parse(greeting.body).content;
+            })
+        });
+    }
+
+    function sendMsg() {
+        stompClient.send("/app/hello",{},JSON.stringify({"name":document.getElementById("msg").value}));
+    }
+
+    function sendUserMsg() {
+        stompClient.send("/app/info",{},JSON.stringify({"name":document.getElementById("userMsg").value}));
+    }
+    function disconnect() {
+        stompClient.disconnect();
+        document.getElementById("sendBtn").setAttribute("disabled","disabled");
+        document.getElementById("closeBtn").setAttribute("disabled","disabled");
+        document.getElementById("sendUserBtn").setAttribute("disabled","disabled");
+    }
+
+</script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+初始化值：<input id="init"><br/>
+代理返回值：<input id="broker"><br/>
+发送内容：<input id="msg"> <input type="button" onclick="sendMsg()" id="sendBtn" value="发送"  disabled="disabled">
+<br/><br/>
+
+指定用户，代理返回值：<input id="userBroker"><br/>
+指定用户，发送内容：<input id="userMsg"> <input type="button" onclick="sendUserMsg()" id="sendUserBtn" value="发送"  disabled="disabled"><br/>
+<input type="button" onclick="connect()" value="连接">
+<input type="button" onclick="disconnect()" value="关闭" id="closeBtn" disabled="disabled">
+</body>
+</html>

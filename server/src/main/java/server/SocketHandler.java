@@ -8,14 +8,19 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Darren on 2017-12-11
  **/
 public class SocketHandler extends TextWebSocketHandler {
 
+    List<WebSocketSession> list = new ArrayList<WebSocketSession>();
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        list.add(session);
         System.err.println("建立连接"+session.getRemoteAddress().getHostName());
     }
 
@@ -24,6 +29,11 @@ public class SocketHandler extends TextWebSocketHandler {
         super.handleTextMessage(session, message);
         System.err.println("接受内容: "+message.getPayload());
         session.sendMessage(new TextMessage((message.getPayload()+"收到了").getBytes()));
+        if(list.size()>1) {
+            for (WebSocketSession childSession : list) {
+                childSession.sendMessage(new TextMessage(("群回消息").getBytes()));
+            }
+        }
     }
 
     @Override

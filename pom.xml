@@ -11,6 +11,8 @@
     <modules>
         <module>client</module>
         <module>server</module>
+        <module>server-broker</module>
+        <module>client-web</module>
     </modules>
 
 

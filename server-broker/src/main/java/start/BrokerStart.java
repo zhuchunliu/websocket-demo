@@ -8,9 +8,9 @@ import org.springframework.context.annotation.ComponentScan;
  * Created by Darren on 2017-12-11
  **/
 @SpringBootApplication
-@ComponentScan({"server","point"})
-public class ServerStart {
+@ComponentScan({"broker"})
+public class BrokerStart {
     public static void main(String[] args) {
-        SpringApplication.run(ServerStart.class);
+        SpringApplication.run(BrokerStart.class);
     }
 }

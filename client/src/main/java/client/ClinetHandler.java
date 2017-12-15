@@ -3,11 +3,10 @@ package client;
 import javax.websocket.*;
 
 /**
- * Created by Darren on 2017-12-11
+ * Created by Darren on 2017-12-13
  **/
 @ClientEndpoint
-public class Handler {
-
+public class ClinetHandler {
     @OnOpen
     public void  onOpen(Session session){
         System.err.println("open 打开连接");

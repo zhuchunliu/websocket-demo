@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+<script>
+    var ws = new SockJS("http://localhost:8080/log");
+
+    ws.onopen = function(){
+        console.log("open");
+//        ws.send("hello");
+    };
+
+    ws.onmessage = function(evt){
+        console.log(evt.data)
+        alert(evt.data);
+    };
+
+    ws.onclose = function(evt) {
+        console.log("WebSocketClosed!");
+        document.getElementById("sendBtn").setAttribute("disabled","disabled");
+        alert("关闭服务");
+    };
+
+    ws.onerror = function(evt) {
+        console.log("WebSocketError!");
+
+        alert(eve.toString());
+    };
+
+    function sendMsg(){
+        ws.send(document.getElementById("msg").value);
+    }
+</script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+输入内容：<input id="msg">
+<input type="button" onclick="sendMsg()" value="发送" id="sendBtn">
+<input type="button" onclick="javascript:ws.close()" value="关闭">
+</body>
+</html>

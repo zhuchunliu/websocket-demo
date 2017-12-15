@@ -1,8 +1,6 @@
-package server;
+package point;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.socket.server.standard.SpringConfigurator;
 
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -12,9 +10,10 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
 /**
+ * 基于@ServerEndpoint标签
  * Created by Darren on 2017-12-12
  **/
-@ServerEndpoint(value = "/info/{userCode}")
+@ServerEndpoint(value = "/point/{userCode}")
 @Component
 public class WebSocketPoint{
 

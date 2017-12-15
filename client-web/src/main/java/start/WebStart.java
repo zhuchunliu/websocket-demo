@@ -5,12 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * Created by Darren on 2017-12-11
+ * Created by Darren on 2017-12-13
  **/
 @SpringBootApplication
-@ComponentScan({"server","point"})
-public class ServerStart {
+@ComponentScan("config")
+public class WebStart {
+
     public static void main(String[] args) {
-        SpringApplication.run(ServerStart.class);
+        SpringApplication.run(WebStart.class);
     }
 }
