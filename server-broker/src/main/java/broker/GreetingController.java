@@ -10,14 +10,16 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.management.Notification;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 /**
  * Created by Darren on 2017-12-13
  **/
-@Controller
+@RestController
 public class GreetingController {
 
     @Autowired
@@ -29,6 +31,7 @@ public class GreetingController {
     @RequestMapping("/send")
     public void send(){
         template.convertAndSend("/topic/greetings",new Greeting("群发消息"));
+        template.convertAndSendToUser("abc","/queue/nofications",new Greeting("群发消息-user"));
     }
 
 
@@ -41,7 +44,7 @@ public class GreetingController {
     }
 
     @MessageMapping("/info")
-    @SendToUser("/queue/nofications")
+    @SendToUser(value = "/queue/nofications",broadcast = false)
     public Greeting nofications(HelloMessage message,Principal principal) throws Exception {
         Thread.sleep(1000); // simulated delay
         System.err.println("参数name: "+message.getName());

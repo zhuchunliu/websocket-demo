@@ -5,6 +5,7 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
+import org.springframework.web.socket.sockjs.transport.handler.SockJsWebSocketHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;

@@ -6,10 +6,13 @@
 <script>
     var stompClient = null;
     function connect(){
-        var socket = new SockJS("http://localhost:8081/client");
 
+
+        var socket = new SockJS("http://localhost:8081/client");
         stompClient = Stomp.over(socket);
-        stompClient.connect("guest", "guest",function (frame) {
+
+        stompClient.connect({},function (frame) {
+            // alert(frame.headers['user-name']);
 
             document.getElementById("sendBtn").removeAttribute("disabled");
             document.getElementById("closeBtn").removeAttribute("disabled");
