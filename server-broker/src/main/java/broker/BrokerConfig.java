@@ -28,8 +28,9 @@ public class BrokerConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 应用程序以 /app 为前缀，而 代理目的地以 /topic 为前缀.
-        registry.enableSimpleBroker("/topic","/queue");
+        registry.enableSimpleBroker("/topic","/topicAbc","/queue");
         registry.setApplicationDestinationPrefixes("/app");
+        registry.setUserDestinationPrefix("/user");
 
         // 下面这配置为默认配置，如有变动修改配置启用就可以了
 //        registry.enableStompBrokerRelay("/topic", "/queue")
@@ -49,8 +50,8 @@ public class BrokerConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
         //为js客户端提供链接
         //必须加上setAllowedOrigins("*"),否则报错： DefaultSockJsService Origin header value not allowed
-        registry.addEndpoint("/client").setHandshakeHandler(new MyDefaultHandshakeHandler()).setAllowedOrigins("*").withSockJS();
-//        registry.addEndpoint("/client").setAllowedOrigins("*").withSockJS();
+//        registry.addEndpoint("/client").setHandshakeHandler(new MyDefaultHandshakeHandler()).setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/client").setAllowedOrigins("*").withSockJS();
 
     }
 

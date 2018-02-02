@@ -30,13 +30,20 @@ public class GreetingController {
      */
     @RequestMapping("/send")
     public void send(){
-        template.convertAndSend("/topic/greetings",new Greeting("群发消息"));
+        template.convertAndSend("/topicAbc/greetings",new Greeting("群发消息"));
         template.convertAndSendToUser("abc","/queue/nofications",new Greeting("群发消息-user"));
     }
 
 
+    @MessageMapping("/index") // 不用@SendTo,则代理返回的订阅地址：/topic/index
+    public Greeting index(HelloMessage message) throws Exception {
+        Thread.sleep(1000); // simulated delay
+        System.err.println("参数name: "+message.getName());
+        return new Greeting("Hello, " + message.getName() + "!");
+    }
+
     @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
+    @SendTo("/topicAbc/greetings")  // 不设置registry.enableSimpleBroker或者 代理前缀包含/topicAbc，如：registry.enableSimpleBroker("/topicAbc")
     public Greeting greeting(HelloMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
         System.err.println("参数name: "+message.getName());
@@ -45,7 +52,7 @@ public class GreetingController {
 
     @MessageMapping("/info")
     @SendToUser(value = "/queue/nofications",broadcast = false)
-    public Greeting nofications(HelloMessage message,Principal principal) throws Exception {
+    public Greeting nofications(HelloMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
         System.err.println("参数name: "+message.getName());
         return new Greeting("Hello, " + message.getName() + "!");
