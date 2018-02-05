@@ -11,7 +11,7 @@
         var socket = new SockJS("http://localhost:8081/client");
         stompClient = Stomp.over(socket);
 
-        stompClient.connect({},function (frame) {
+        stompClient.connect({userName:"james"},function (frame) {
             // alert(frame.headers['user-name']);
 
             document.getElementById("sendBtn").removeAttribute("disabled");
@@ -30,11 +30,11 @@
                 document.getElementById("indexBroker").value = JSON.parse(greeting.body).content;
             });
 
-            stompClient.subscribe("/app/init",function (value) {
+            stompClient.subscribe("/app/init/abc",function (value) {
                 document.getElementById("init").value = value.body;
-            });
+            },{location:"北京"});
 
-            stompClient.subscribe("/user/abc/queue/nofications",function (greeting) {
+            stompClient.subscribe("/user/queue/nofications",function (greeting) {
                 document.getElementById("userBroker").value = JSON.parse(greeting.body).content;
             })
         });
