@@ -9,6 +9,7 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -26,9 +27,9 @@ public class GreetingController {
      * 给订阅了/topic/greetings的人群发消息
      */
     @RequestMapping("/send")
-    public void send(){
+    public void send(@RequestParam(value = "name",defaultValue = "james")String name){
         template.convertAndSend("/topicAbc/greetings",new Greeting("群发消息"));
-        template.convertAndSendToUser("james","/queue/nofications",new Greeting("群发消息-user"));
+        template.convertAndSendToUser(name,"/queue/nofications",new Greeting("群发消息-"+name));
     }
 
 
